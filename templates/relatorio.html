@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/relatorio.css">
+</head>
+<body>
+
+    <form method="POST">
+        <input type="button" value="Recarregar" onClick="window.location.reload()">
+    </form>
+
+    <h2>Relatório de Ponto</h2>
+
+    <h3>Registros:</h3>
+    <ul>
+        {% for r in registros %}
+            <li>{{ r.nome }} - {{ r.hora.strftime('%d/%m/%Y %H:%M:%S') }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

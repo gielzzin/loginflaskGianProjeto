@@ -1,0 +1,21 @@
+body {
+    background: linear-gradient(to bottom, #e0e0e0, #ffffff);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #ccc, #eee);
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      padding-top: 50px;
+  }
+
+h1, h2 {
+    text-align: center;
+}
+}
