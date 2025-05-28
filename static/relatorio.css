@@ -15,7 +15,40 @@ body {
       padding-top: 50px;
   }
 
-h1, h2 {
-    text-align: center;
+  .tabela, th, td{
+    border-collapse: collapse; /*define a separação entre as bordar*/
+    padding: 10px;
+    text-align: left;
+    border: 1px solid rgb(160 160 160);
 }
+th{
+    background-color: lightgray;
+}
+}
+
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px #aaa;
+  width: 350px;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.botaoCarregar {
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
 }

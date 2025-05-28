@@ -26,7 +26,7 @@ def entrada_ponto():
             db.session.add(novo_registro)
             db.session.commit()
             print(f'✅ {nome} bateu ponto às {novo_registro.hora.strftime("%H:%M:%S")}')
-        return redirect(url_for('entrada_ponto'))
+        return redirect(url_for('saida_ponto'))
 
     registros = RegistroPonto.query.order_by(RegistroPonto.hora.desc()).all()
     return render_template('entradaPonto.html', registros=registros)
@@ -43,7 +43,7 @@ def saida_ponto():
         return redirect(url_for('saida_ponto'))
 
     registros = RegistroPonto.query.order_by(RegistroPonto.hora.desc()).all()
-    return render_template('entradaPonto.html', registros=registros)
+    return render_template('saidaPonto.html', registros=registros)
 
 
 @app.route('/templates/relatorio.html', methods=['GET'])

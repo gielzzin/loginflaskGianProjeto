@@ -8,17 +8,43 @@
 </head>
 <body>
 
-    <form method="POST">
-        <input type="button" value="Recarregar" onClick="window.location.reload()">
-    </form>
-
+    <div class="container">
     <h2>Relatório de Ponto</h2>
 
     <h3>Registros:</h3>
-    <ul>
-        {% for r in registros %}
-            <li>{{ r.nome }} - {{ r.hora.strftime('%d/%m/%Y %H:%M:%S') }}</li>
-        {% endfor %}
-    </ul>
+    <table class="tabela">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Horário</th>
+        </tr>
+        </thead>
+        
+        <tbody>
+            {% for r in registros %}
+        <tr>
+            <td>
+                {{ r.id }}
+            </td>
+            <td>
+                {{ r.nome }} 
+            </td>
+            <td>
+                {{ r.hora.strftime('%d/%m/%Y %H:%M:%S') }} 
+            </td>
+        </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <form method="POST">
+        <input type="button" class="botaoRecarregar" value="Recarregar" onClick="window.location.reload()">
+    </form>
+
+    </div>
 </body>
 </html>
