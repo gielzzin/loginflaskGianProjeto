@@ -9,13 +9,12 @@
 </head>
 <body>
 
-    <div id="visivel">
-
     <div class="container">
     <h2>Relatório de Ponto</h2>
 
     <h3>Registros:</h3>
-    <table class="tabela">
+    <div id="visivel">
+    <table class="tabelaEntrada">
         <thead>
         <tr>
             <th>ID</th>
@@ -25,16 +24,45 @@
         </thead>
         
         <tbody>
-            {% for r in registros %}
+            {% for rEntrada in registrosEntrada %}
         <tr>
             <td>
-                {{ r.id }}
+                {{ rEntrada.id }}
             </td>
             <td>
-                {{ r.nome }} 
+                {{ rEntrada.nome }} 
             </td>
             <td>
-                {{ r.hora.strftime('%d/%m/%Y %H:%M:%S') }} 
+                {{ rEntrada.hora.strftime('%d/%m/%Y %H:%M:%S') }} 
+            </td>
+        </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+    <table class="tabelaSaida">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Horário</th>
+        </tr>
+        </thead>
+        
+        <tbody>
+            {% for rSaida in registrosSaida %}
+        <tr>
+            <td>
+                {{ rSaida.id }}
+            </td>
+            <td>
+                {{ rSaida.nome }} 
+            </td>
+            <td>
+                {{ rSaida.hora.strftime('%d/%m/%Y %H:%M:%S') }} 
             </td>
         </tr>
             {% endfor %}
@@ -48,10 +76,8 @@
         <input type="button" class="botaoRecarregar" value="Recarregar" onClick="window.location.reload()">
     </form>
 
-    <button onclick="visibilidade()">Alternar</button>
-
+    <button id="btnEntrada">Alternar Tabela Entrada</button>
+    <button id="btnSaida">Alternar Tabela Saida</button>
     </div>
-
-</div>
 </body>
 </html>
