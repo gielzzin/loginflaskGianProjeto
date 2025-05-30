@@ -32,12 +32,18 @@ th{
 }
 }
 
+.container #tabelaFlex {
+  display: flex;
+  flex: 1;
+  flex-direction:row;
+}
+
 .container {
   background: white;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 0 10px #aaa;
-  width: 350px;
+  width: 450px;
 }
 
 h1, h2 {

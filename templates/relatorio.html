@@ -13,8 +13,10 @@
     <h2>Relatório de Ponto</h2>
 
     <h3>Registros:</h3>
-    <div id="visivel">
+    <div id="tabelaFlex">
+    <div id="visivelEntrada">
     <table class="tabelaEntrada">
+        <h4>Tabela Horário de Entrada</h4>
         <thead>
         <tr>
             <th>ID</th>
@@ -42,8 +44,9 @@
     </table>
 
 </div>
-
+<div id="visivelSaida">
     <table class="tabelaSaida">
+        <h4>Tabela Horário de Saida</h4>
         <thead>
         <tr>
             <th>ID</th>
@@ -70,14 +73,17 @@
 
     </table>
 
+    </div>
+    </div>
     <br>
 
     <form method="POST">
         <input type="button" class="botaoRecarregar" value="Recarregar" onClick="window.location.reload()">
     </form>
 
-    <button id="btnEntrada">Alternar Tabela Entrada</button>
-    <button id="btnSaida">Alternar Tabela Saida</button>
+    <button onclick="botaoEntrada()">Alternar Tabela Entrada</button>
+    <button onclick="botaoSaida()">Alternar Tabela Saida</button>
+
     </div>
 </body>
 </html>
