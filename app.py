@@ -12,7 +12,12 @@ def hora_brasilia():
     fuso_brasilia = pytz.timezone('America/Sao_Paulo')
     return datetime.now(fuso_brasilia)
 
-class RegistroPonto(db.Model):
+class entradaPonto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    hora = db.Column(db.DateTime, default=hora_brasilia)
+
+class saidaPonto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
     hora = db.Column(db.DateTime, default=hora_brasilia)
@@ -22,13 +27,13 @@ def entrada_ponto():
     if request.method == 'POST':
         nome = request.form['nome']
         if nome:
-            novo_registro = RegistroPonto(nome=nome)
+            novo_registro = entradaPonto(nome=nome)
             db.session.add(novo_registro)
             db.session.commit()
             print(f'✅ {nome} bateu ponto às {novo_registro.hora.strftime("%H:%M:%S")}')
         return redirect(url_for('saida_ponto'))
 
-    registros = RegistroPonto.query.order_by(RegistroPonto.hora.desc()).all()
+    registros = entradaPonto.query.order_by(entradaPonto.hora.desc()).all()
     return render_template('entradaPonto.html', registros=registros)
 
 @app.route('/templates/saidaPonto.html', methods=['GET', 'POST'])
@@ -36,13 +41,13 @@ def saida_ponto():
     if request.method == 'POST':
         nome = request.form['nome']
         if nome:
-            novo_registro = RegistroPonto(nome=nome)
+            novo_registro = saidaPonto(nome=nome)
             db.session.add(novo_registro)
             db.session.commit()
             print(f'✅ {nome} bateu ponto às {novo_registro.hora.strftime("%H:%M:%S")}')
         return redirect(url_for('saida_ponto'))
 
-    registros = RegistroPonto.query.order_by(RegistroPonto.hora.desc()).all()
+    registros = saidaPonto.query.order_by(saidaPonto.hora.desc()).all()
     return render_template('saidaPonto.html', registros=registros)
 
 
@@ -50,11 +55,12 @@ def saida_ponto():
 def relatorio():
    if request.method == 'POST':
         nome = request.form.get('nome')
-        RegistroPonto(nome=nome)
+        entradaPonto(nome=nome)
+        saidaPonto(nome=nome)
 
         return redirect(url_for('relatorio'))
    
-   registros = RegistroPonto.query.order_by(RegistroPonto.hora.desc()).all()
+   registros = entradaPonto.query.order_by(entradaPonto.hora.desc()).all()
    return render_template('relatorio.html', registros=registros)
 
 if __name__ == '__main__':
