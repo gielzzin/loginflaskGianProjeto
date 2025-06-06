@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask import jsonify
 from datetime import datetime
 import pytz
 
@@ -18,6 +19,11 @@ class entradaPonto(db.Model):
     hora = db.Column(db.DateTime, default=hora_brasilia)
 
 class saidaPonto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    hora = db.Column(db.DateTime, default=hora_brasilia)
+
+class justificativa(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
     hora = db.Column(db.DateTime, default=hora_brasilia)
@@ -50,21 +56,48 @@ def saida_ponto():
     registrosS = saidaPonto.query.order_by(saidaPonto.hora.desc()).all()
     return render_template('saidaPonto.html', registrosSaida=registrosS)
 
+@app.route('/templates/justificativa.html', methods=['GET', 'POST'])
+def justificativas():
+    if request.method == 'POST':
+        textoJustificativa = request.form['nome']
+        if textoJustificativa:
+            novo_registro = justificativa(nome=textoJustificativa)
+            db.session.add(novo_registro)
+            db.session.commit()
+        return redirect(url_for('justificativas'))
+
+    registrosJ = justificativa.query.order_by(justificativa.hora.desc()).all()
+    return render_template('justificativa.html', registrosJustificativa=registrosJ)
+
+
+@app.route('/api/justificativas', methods=['GET'])
+def api_justificativas():
+    registrosJ = justificativa.query.order_by(justificativa.hora.desc()).all()
+    justificativas_list = [
+        {'id': j.id, 'nome': j.nome, 'hora': j.hora.strftime('%Y-%m-%d %H:%M:%S')}
+        for j in registrosJ
+    ]
+    return jsonify(justificativas=justificativas_list)
+
+
 
 @app.route('/templates/relatorio.html', methods=['GET'])
 def relatorio():
     if request.method == 'POST':
             nomeEntrada = request.form.get('nome')
             nomeSaida = request.form.get('nome')
+            textoJustificativa = request.form.get('nome')
             entradaPonto(nome=nomeEntrada)
             saidaPonto(nome=nomeSaida)
+            justificativa(nome=textoJustificativa)
 
             return redirect(url_for('relatorio'))
    
     registrosE = entradaPonto.query.order_by(entradaPonto.hora.desc()).all()
     registrosS = saidaPonto.query.order_by(saidaPonto.hora.desc()).all()
+    registrosJ = justificativa.query.order_by(justificativa.hora.desc()).all()
 
-    return render_template('relatorio.html', registrosEntrada = registrosE, registrosSaida = registrosS)
+    return render_template('relatorio.html', registrosEntrada = registrosE, registrosSaida = registrosS, registrosJustificativa = registrosJ)
 
 
 if __name__ == '__main__':

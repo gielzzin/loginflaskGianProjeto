@@ -12,9 +12,11 @@
         <h2>Você está atrasado!</h2>
         <h3 class="alerta">Justifique!</h3>
         <div id="texto">
-        <textarea minlength=20  maxlength=255 placeholder="Digite sua justificativa aqui..." value=""></textarea>
+        <form method="POST">
+        <textarea minlength=20  maxlength=2000 placeholder="Digite sua justificativa aqui..." name="nome"></textarea>
         </div>
         <button class="enviar">Enviar</button>
+    </form>
     </div>
 </body>
 </html>

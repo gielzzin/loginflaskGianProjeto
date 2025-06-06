@@ -4,13 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/static/styleUm.css">
     <link rel="stylesheet" href="/static/relatorio.css">
     <script src="relatorio.js"></script>
 </head>
 <body>
+    
+    <nav>
+        <ul>
+            <a href="/indexFuncionario.html"><img class="logo" src="/indexImage/logo.png" alt="Logo"></a>
+            <li>
+                <a href="#">Categoria ▾</a>
+                <ul class="dropdown">
+                    <li><a href="#fantasia">Fantasia</a></li>
+                    <li><a href="#romance">Romance</a></li>
+                    <li><a href="#aventura">Aventura</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Top da Semana</a></li>
+            <li><a href="#">Mais Vendidos</a></li>
+            <li>
+                <a href="#">Funcionário ▾</a>
+                <ul class="dropdown">
+                    <li><a href="/html/tabela.html">Tabela</a></li>
+                    <li><a href="/html/publicar.html">Publicar Livro</a></li>
+                    <li><a href="/html/relatorio.html">Relatório</a></li>
+                </ul>
+            </li>
+
+            <a href="/html/login.html"><img class="perfil" src="/indexImage/perfil.png" alt="Perfil"></a>
+        </ul>
+    </nav>
+
+
 
     <div class="container">
     <h2>Relatório de Ponto</h2>
+
+
+    <div class="search-by-id">
+        <label for="idSearch">Buscar por ID:</label>
+        <input type="number" id="idSearch" placeholder="Digite o ID">
+        <button onclick="filterById()">Buscar</button>
+    </div>
+
+
 
     <h3>Registros:</h3>
     <div id="tabelaFlex">
@@ -72,18 +110,63 @@
         </tbody>
 
     </table>
-
-    </div>
-    </div>
-    <br>
-
-    <form method="POST">
-        <input type="button" class="botaoRecarregar" value="Recarregar" onClick="window.location.reload()">
-    </form>
-
+      </div>
+    <div id="visivelJustificativa">
+        <table class="tabelaJustificativa">
+            <h4>Justificativas</h4>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+                {% for rJustificativa in registrosJustificativa %}
+            <tr>
+                <td>
+                    {{ rJustificativa.id }}
+                </td>
+                <div id="justificativas">
+                <td>
+                    <div id="tabelaRolamento">
+                    {{ rJustificativa.nome }} 
+                </div>
+                </td>
+            </div>
+            </tr>
+                {% endfor %}
+            </tbody>
+    
+        </table>
+                </div>
+            </div>
+    <br>  
+    <input type="button" class="botaoRecarregar" value="Recarregar" onClick="window.location.reload()">
     <button onclick="botaoEntrada()">Alternar Tabela Entrada</button>
     <button onclick="botaoSaida()">Alternar Tabela Saida</button>
 
     </div>
+
+    <script src="/templates/relatorio.js"></script>   
+
+    <footer>
+
+        <br>
+        <a class="outros" href="">CONTATO</a>
+        <a class="outros" href="">TRABALHE CONOSCO</a>
+        <a class="outros" href="">TERMOS E CONDIÇÃO</a>
+
+        <div class="dire">
+            <p class="direitos">Bazinga Livraria</p>
+            <br>
+            <p class="direitos">©Todos os Direitos Reservados</p>
+        </div>
+
+        <a class="outros" href="">PRIVACIDADE</a>
+        <a class="outros" href="">SOBRE NÓS</a>
+        <a class="outros" href="">OUTROS COMÉRCIOS</a>
+
+    </footer>
 </body>
 </html>

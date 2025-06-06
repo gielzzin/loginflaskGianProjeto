@@ -10,6 +10,7 @@ class Usuario(db.Model):
     nome = db.Column(db.String(100), nullable=False) 
     registrosEntrada = db.relationship('entradaPonto', backref='usuario', lazy=True)
     registrosSaida = db.relationship('saidaPonto', backref='usuario', lazy=True)
+    textoJustificativa = db.relationship('justificativa', backref='usuario', lazy=True)
 
 def hora_brasilia():
     fuso_brasilia = pytz.timezone('America/Sao_Paulo')
@@ -25,3 +26,8 @@ class saidaPonto(db.Model):
     idSaida = db.Column(db.Integer, primary_key=True)
     nomeSaida = db.Column(db.String(100), nullable=False)
     horaSaida = db.Column(db.DateTime, default=hora_brasilia)    
+
+class justificativa(db.Model):
+    idJustificativa = db.Column(db.Integer, primary_key=True)
+    textoJustificativa = db.Column(db.String(100), nullable=False)
+    horaJustificativa = db.Column(db.DateTime, default=hora_brasilia)   
