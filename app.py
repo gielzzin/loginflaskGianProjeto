@@ -69,18 +69,6 @@ def justificativas():
     registrosJ = justificativa.query.order_by(justificativa.hora.desc()).all()
     return render_template('justificativa.html', registrosJustificativa=registrosJ)
 
-
-@app.route('/api/justificativas', methods=['GET'])
-def api_justificativas():
-    registrosJ = justificativa.query.order_by(justificativa.hora.desc()).all()
-    justificativas_list = [
-        {'id': j.id, 'nome': j.nome, 'hora': j.hora.strftime('%Y-%m-%d %H:%M:%S')}
-        for j in registrosJ
-    ]
-    return jsonify(justificativas=justificativas_list)
-
-
-
 @app.route('/templates/relatorio.html', methods=['GET'])
 def relatorio():
     if request.method == 'POST':
