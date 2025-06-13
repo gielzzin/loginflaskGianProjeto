@@ -17,7 +17,7 @@ body {
   
   .container {
       background: white;
-      padding: 30px;
+      padding: 40px;
       border-radius: 15px;
       box-shadow: 0 0 10px #aaa;
       width: 350px;
@@ -37,45 +37,6 @@ body {
   input {
       padding: 10px;
       font-size: 16px;
-  }
-  
-  button {
-      padding: 10px;
-      background: #007bff;
-      color: white;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 8px;
-  }
-  
-  button:hover {
-      background: #0056b3;
-  }
-  
-  ul {
-      list-style: none;
-      padding: 0;
-  }
-    
-  .container {
-    background: white;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  h1 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .time-display {
-    font-size: 48px;
-    margin-bottom: 30px;
-    font-weight: bold;
-    color: #0055cc;
   }
   
   button {

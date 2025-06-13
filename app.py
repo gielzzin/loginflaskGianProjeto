@@ -1,10 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, Blueprint
+from flask_restplus import Api
+from werkzeug.contrib.fixers import ProxyFix
 from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
 from datetime import datetime
 import pytz
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
+blueprint = Blueprint('api', __name__)
+app.register_blueprint(blueprint)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco_ponto.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
