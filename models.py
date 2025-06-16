@@ -5,6 +5,11 @@ import pytz
 
 db = SQLAlchemy()
 
+def hora_brasilia():
+    fuso_brasilia = pytz.timezone('America/Sao_Paulo')
+    return datetime.now(fuso_brasilia)
+
+
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False) 
@@ -12,22 +17,21 @@ class Usuario(db.Model):
     registrosSaida = db.relationship('saidaPonto', backref='usuario', lazy=True)
     textoJustificativa = db.relationship('justificativa', backref='usuario', lazy=True)
 
-def hora_brasilia():
-    fuso_brasilia = pytz.timezone('America/Sao_Paulo')
-    return datetime.now(fuso_brasilia)
-
 class entradaPonto(db.Model):
-    idEntrada = db.Column(db.Integer, primary_key=True)
-    horarioEntrada = db.Column(db.DateTime, default=hora_brasilia)
-    nomeEntrada = db.Column(db.String(100), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    hora = db.Column(db.DateTime, default=hora_brasilia)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 
+
 class saidaPonto(db.Model):
-    idSaida = db.Column(db.Integer, primary_key=True)
-    nomeSaida = db.Column(db.String(100), nullable=False)
-    horaSaida = db.Column(db.DateTime, default=hora_brasilia)    
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    hora = db.Column(db.DateTime, default=hora_brasilia)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 
 class justificativa(db.Model):
-    idJustificativa = db.Column(db.Integer, primary_key=True)
-    textoJustificativa = db.Column(db.String(100), nullable=False)
-    horaJustificativa = db.Column(db.DateTime, default=hora_brasilia)   
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    hora = db.Column(db.DateTime, default=hora_brasilia)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)

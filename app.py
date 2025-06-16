@@ -1,44 +1,24 @@
-from flask import Flask, render_template, request, redirect, url_for, Blueprint
-from flask_restplus import Api
-from werkzeug.contrib.fixers import ProxyFix
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask import jsonify
+from models import db, Usuario, entradaPonto, saidaPonto, justificativa
 from datetime import datetime
 import pytz
 
 app = Flask(__name__)
-app.wsgi_app = ProxyFix(app.wsgi_app)
-blueprint = Blueprint('api', __name__)
-app.register_blueprint(blueprint)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco_ponto.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+db.init_app(app)
 
 def hora_brasilia():
     fuso_brasilia = pytz.timezone('America/Sao_Paulo')
     return datetime.now(fuso_brasilia)
-
-class entradaPonto(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    hora = db.Column(db.DateTime, default=hora_brasilia)
-
-class saidaPonto(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    hora = db.Column(db.DateTime, default=hora_brasilia)
-
-class justificativa(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    hora = db.Column(db.DateTime, default=hora_brasilia)
 
 @app.route('/templates/entradaPonto.html', methods=['GET', 'POST'])
 def entrada_ponto():
     if request.method == 'POST':
         nomeEntrada = request.form['nome']
         if nomeEntrada:
-            novo_registro = entradaPonto(nome=nomeEntrada)
+            novo_registro = entradaPonto(nome=nomeEntrada, usuario_id=1)
             db.session.add(novo_registro)
             db.session.commit()
             print(f'✅ {nomeEntrada} bateu ponto às {novo_registro.hora.strftime("%H:%M:%S")}')
@@ -52,7 +32,7 @@ def saida_ponto():
     if request.method == 'POST':
         nomeSaida = request.form['nome']
         if nomeSaida:
-            novo_registro = saidaPonto(nome=nomeSaida)
+            novo_registro = saidaPonto(nome=nomeSaida, usuario_id=1)
             db.session.add(novo_registro)
             db.session.commit()
             print(f'✅ {nomeSaida} bateu ponto às {novo_registro.hora.strftime("%H:%M:%S")}')
@@ -66,7 +46,7 @@ def justificativas():
     if request.method == 'POST':
         textoJustificativa = request.form['nome']
         if textoJustificativa:
-            novo_registro = justificativa(nome=textoJustificativa)
+            novo_registro = justificativa(nome=textoJustificativa, usuario_id=1)
             db.session.add(novo_registro)
             db.session.commit()
         return redirect(url_for('justificativas'))
@@ -96,5 +76,9 @@ def relatorio():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+        if not Usuario.query.first():
+            usuario = Usuario(nome="Usuário Padrão")
+            db.session.add(usuario)
+            db.session.commit()
     app.run(debug=True, port=5500)
 
