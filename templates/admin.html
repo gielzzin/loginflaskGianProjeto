@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+</head>
+<body>
+    {{ user.nome }}
+    {% if user.admin %}
+        O Usuário é um Admin
+    {% endif %}
+
+    <h1>Cadastro Usuário</h1>
+    <form action="/admin" method="POST">
+        <input type="text" name="nome" placeholder="Jorginho da Silva">
+        <input type="email" name="email" placeholder="jorginho@gmail.com">
+        <input type="password" name="senha" placeholder="1234567890">
+        <input type="checkbox" name="admin" value="1"> Administrador
+        <br>
+        <button type="submit">Cadastrar Usuário</button>
+    </form>
+
+    {{ error }}
+</body>
+</html>

@@ -3,4 +3,4 @@ venv/
 __pycache__/
 .vscode/
 .idea/
-# banco_ponto.db
+banco_ponto.db

@@ -1,34 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Bater Ponto</title>
-  <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserir Texto | bleh</title>
 </head>
 <body>
-  <div class="container">
-    <h1>Bater Ponto</h1>
-    <div class="time-display" id="clock">00:00:00</div>
-    <button onclick="baterPonto()">Bater Ponto</button>
-  </div>
-
-  <script>
-    function updateClock() {
-      const now = new Date();
-      const time = now.toLocaleTimeString('pt-BR');
-      document.getElementById('clock').textContent = time;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    function baterPonto() {
-      fetch('/bater_ponto', {
-        method: 'POST',
-      })
-      .then(res => res.json())
-      .then(data => alert(data.mensagem))
-      .catch(err => console.error("Erro ao bater ponto:", err));
-    }
-  </script>
+   Pagina Index POGGERSSSSSSSS Se tiver sem logar ele vai pro login, depois que logar vem pra ca, ai ai ai ai tesaooooo
+   
 </body>
 </html>

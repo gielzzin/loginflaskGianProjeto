@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
+from flask_login import current_user, login_user, logout_user
+from flask_login import LoginManager
 from models import db, Usuario, entradaPonto, saidaPonto, justificativa
 from datetime import datetime
 import pytz
@@ -7,11 +8,84 @@ import pytz
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco_ponto.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'your_secret_key_here'  
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
 db.init_app(app)
 
 def hora_brasilia():
     fuso_brasilia = pytz.timezone('America/Sao_Paulo')
     return datetime.now(fuso_brasilia)
+
+
+@app.route("/")
+def home():
+    if current_user.is_authenticated:
+        return redirect(url_for("funcionario"))
+    else:
+        return redirect(url_for("login"))               
+
+@app.route("/funcionario")
+def funcionario():
+    if current_user.is_authenticated and current_user.admin:
+        return redirect(url_for("admin"))
+
+    if current_user.is_authenticated:
+        return render_template("index.html", user=current_user)
+    else:
+        return redirect(url_for("login"))
+
+@app.route("/admin", methods=['GET', 'POST'])
+def admin():
+    if current_user.is_authenticated and current_user.admin:
+        if request.method == 'POST':
+            nome = request.form.get("nome")
+            email = request.form.get("email")
+            senha = request.form.get("senha")
+            admin = request.form.get("admin")
+
+            if request.form.get("admin"):
+                admin = True
+            else:
+                admin = False
+
+            # Verifica se o usuário já existe
+            if Usuario.query.filter_by(email=email).first():
+                return render_template("admin.html", user=current_user, error="Usuário já existe.")
+
+            
+            # Verifica se a Senha é Válida
+            if len(senha) < 6:
+                return render_template("admin.html", user=current_user, error="A senha deve ter pelo menos 6 caracteres.")
+            
+            # Verifica se o nome é válido
+            if len(nome) < 3:
+                return render_template("admin.html", user=current_user, error="O nome deve ter pelo menos 3 caracteres.")
+
+            novo_usuario = Usuario(nome=nome, email=email, senha=senha, admin=admin)
+            db.session.add(novo_usuario)
+            db.session.commit()
+            return redirect(url_for("admin"))
+        
+        return render_template("admin.html", user=current_user)
+    else:
+        return redirect(url_for("home"))
+
+@app.route("/templates/loginn.html", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get("email")
+        senha = request.form.get("senha")
+
+        Usuario = Usuario.query.filter_by(email=email).first()
+        if Usuario and Usuario.senha == senha:
+            login_user(Usuario)
+            return redirect(url_for("funcionario"))
+        else:   
+            return render_template("loginn.html", error="Email ou senha incorretos.")
+    return render_template("loginn.html")
+
 
 @app.route('/templates/entradaPonto.html', methods=['GET', 'POST'])
 def entrada_ponto():
@@ -72,13 +146,17 @@ def relatorio():
 
     return render_template('relatorio.html', registrosEntrada = registrosE, registrosSaida = registrosS, registrosJustificativa = registrosJ)
 
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("login"))
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Usuario.query.get(int(user_id))
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        if not Usuario.query.first():
-            usuario = Usuario(nome="Usuário Padrão")
-            db.session.add(usuario)
-            db.session.commit()
     app.run(debug=True, port=5500)
 
