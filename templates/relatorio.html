@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/styleUm.css">
+    <link rel="stylesheet" href="/static/relatorio.css">
+    <script src="relatorio.js"></script>
+</head>
+<body>
+    
+    <nav>
+        <ul>
+            <a href="/templates/relatorio.html"><img class="logo" src="/static/png/unnamed.png" alt="Logo"></a>
+            <li>
+                <a href="#">Categoria ▾</a>
+                <ul class="dropdown">
+                    <li><a href="">A</a></li>
+                    <li><a href="">B</a></li>
+                    <li><a href="">C</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Top da Semana</a></li>
+            <li><a href="#">Mais Vendidos</a></li>
+            <li>
+                <a href="#">Funcionário ▾</a>
+                <ul class="dropdown">
+                    <li><a href="/templates/justificativa.html">Justificativa</a></li>
+                    <li><a href="/templates/relatorio.html">Relatório</a></li>
+                    <li><a href="/templates/saidaPonto.html">Bater Saida</a></li>
+                </ul>
+            </li>
+
+            <a href="/templates/entradaPonto.html"><img class="perfil" src="/static/png/perfil.png" alt="Perfil"></a>
+        </ul>
+    </nav>
+
+    <div class="container">
+    <h2>Relatório de Ponto</h2>
+    <h3>Registros:</h3>
+    <div id="tabelaFlex">
+    <div id="visivelEntrada">
+    <table class="tabelaEntrada">
+        <h4>Tabela Horário de Entrada</h4>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Horário</th>
+        </tr>
+        </thead>
+        
+        <tbody>
+            {% for rEntrada in registrosEntrada %}
+        <tr>
+            <td>
+                {{ rEntrada.id }}
+            </td>
+            <td>
+                {{ rEntrada.nome }} 
+            </td>
+            <td>
+                {{ rEntrada.hora.strftime('%d/%m/%Y %H:%M:%S') }} 
+            </td>
+        </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+<div id="visivelSaida">
+    <table class="tabelaSaida">
+        <h4>Tabela Horário de Saida</h4>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Horário</th>
+        </tr>
+        </thead>
+        
+        <tbody>
+            {% for rSaida in registrosSaida %}
+        <tr>
+            <td>
+                {{ rSaida.id }}
+            </td>
+            <td>
+                {{ rSaida.nome }} 
+            </td>
+            <td>
+                {{ rSaida.hora.strftime('%d/%m/%Y %H:%M:%S') }} 
+            </td>
+        </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+      </div>
+    <div id="visivelJustificativa">
+        <table class="tabelaJustificativa">
+            <h4>Justificativas</h4>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Justificativa</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+                {% for rJustificativa in registrosJustificativa %}
+            <tr>
+                <td>
+                    {{ rJustificativa.id }}
+                </td>
+                <div id="justificativas">
+                <td>
+                    <div id="tabelaRolamento">
+                    {{ rJustificativa.nome }} 
+                </div>
+                </td>
+            </div>
+            </tr>
+                {% endfor %}
+            </tbody>
+    
+        </table>
+                </div>
+            </div>
+    <br>  
+    <input type="button" class="botaoRecarregar" value="Recarregar" onClick="window.location.reload()">
+    </div>
+
+    <script src="/templates/relatorio.js"></script>   
+
+    <footer>
+
+        <br>
+        <a class="outros" href="">CONTATO</a>
+        <a class="outros" href="">TRABALHE CONOSCO</a>
+        <a class="outros" href="">TERMOS E CONDIÇÃO</a>
+
+        <div class="dire">
+
+            <br>
+            <p class="direitos">©Todos os Direitos Reservados</p>
+        </div>
+
+        <a class="outros" href="">PRIVACIDADE</a>
+        <a class="outros" href="">SOBRE NÓS</a>
+        <a class="outros" href="">OUTROS COMÉRCIOS</a>
+
+    </footer>
+</body>
+</html>
